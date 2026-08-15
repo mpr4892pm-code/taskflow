@@ -128,8 +128,6 @@ from .ai_parser import parse_quick_add
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="TaskFlow API")
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -279,7 +277,6 @@ def create_task(
         description=task.description,
         priority=task.priority,
         due_date=task.due_date,
-        status=task.status,
         project_id=task.project_id
     )
 
@@ -289,11 +286,7 @@ def create_task(
 
     return new_task
 
-@app.get("/tasks")
-def get_tasks(
-    sort: str | None = None,
-    db: Session = Depends(get_db)
-):
+
     tasks = db.query(Task).all()
 
     records = [
@@ -458,3 +451,77 @@ def search_tasks(
     task_id = index[position]["id"]
 
     return get_task(task_id, db)
+
+@app.get("/projects/stats")
+def project_stats(
+    db: Session = Depends(get_db)
+):
+
+    rows = (
+        db.query(
+            Project.project_id,
+            Project.project_name,
+            func.count(Task.task_id).label("task_count")
+        )
+        .outerjoin(
+            Task,
+            Project.project_id == Task.project_id
+        )
+        .group_by(
+            Project.project_id,
+            Project.project_name
+        )
+        .all()
+    )
+
+    return [
+        {
+            "project_id": row.project_id,
+            "project_name": row.project_name,
+            "task_count": row.task_count
+        }
+        for row in rows
+    ]
+
+@app.post(
+    "/tasks/quick-add",
+    response_model=TaskResponse,
+    status_code=201
+)
+def quick_add(
+    data: QuickAddRequest,
+    db: Session = Depends(get_db)
+):
+
+    project = (
+        db.query(Project)
+        .filter(
+            Project.project_id == data.project_id
+        )
+        .first()
+    )
+
+    if not project:
+        raise HTTPException(
+            status_code=422,
+            detail="Project not found"
+        )
+
+    parsed = parse_quick_add(
+        data.description
+    )
+
+    new_task = Task(
+        title=parsed["title"],
+        description=data.description,
+        priority=parsed["priority"],
+        due_date=parsed["due_date_hint"],
+        status="pending",
+        project_id=data.project_id
+    )
+
+    db.add(new_task)
+    db.commit()
+    db.refresh(new_task)
+
+    return new_task
