@@ -222,7 +222,7 @@ def create_project(
 ):
     owner = (
         db.query(User)
-        .filter(User.user_id == project.owner_id)
+        .filter(User.id == project.owner_id)
         .first()
     )
 
@@ -291,12 +291,11 @@ def create_task(
 
     records = [
         {
-            "task_id": task.task_id,
+            "id": task.id,
             "title": task.title,
             "description": task.description,
             "priority": task.priority,
             "due_date": task.due_date,
-            "status": task.status,
             "project_id": task.project_id
         }
         for task in tasks
@@ -332,7 +331,7 @@ def get_task(
 ):
     task = (
         db.query(Task)
-        .filter(Task.task_id == task_id)
+        .filter(Task.id == task_id)
         .first()
     )
 
@@ -356,7 +355,7 @@ def update_task(
 ):
     task = (
         db.query(Task)
-        .filter(Task.task_id == task_id)
+        .filter(Task.id == task_id)
         .first()
     )
 
@@ -385,7 +384,7 @@ def delete_task(
 ):
     task = (
         db.query(Task)
-        .filter(Task.task_id == task_id)
+        .filter(Task.id == task_id)
         .first()
     )
 
@@ -412,7 +411,7 @@ def search_tasks(
 
     index = [
         {
-            "id": task.task_id,
+            "id": task.id,
             "title": task.title
         }
         for task in tasks
@@ -461,7 +460,7 @@ def project_stats(
         db.query(
             Project.project_id,
             Project.project_name,
-            func.count(Task.task_id).label("task_count")
+            func.count(Task.id).label("task_count")
         )
         .outerjoin(
             Task,
