@@ -506,7 +506,7 @@ def quick_add_task(
         )
 
     parsed = parse_quick_add(
-        data.description
+        data.text
     )
 
     new_task = Task(
