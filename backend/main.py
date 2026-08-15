@@ -486,7 +486,7 @@ def project_stats(
     response_model=TaskResponse,
     status_code=201
 )
-def quick_add(
+def quick_add_task(
     data: QuickAddRequest,
     db: Session = Depends(get_db)
 ):
