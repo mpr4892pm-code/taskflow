@@ -12,3 +12,8 @@ This project uses the two-process local development setup.
 ```bash
 git clone <YOUR_REPOSITORY_URL>
 cd TaskFlow
+
+## Frontend
+
+The TaskFlow frontend uses HTML, CSS and JavaScript and communicates
+with the FastAPI backend using the Fetch API.
