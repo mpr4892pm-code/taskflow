@@ -31,14 +31,14 @@ class UserResponse(BaseModel):
 
 class ProjectCreate(BaseModel):
     project_name: str
-    description: Optional[str] = None
+    text: Optional[str] = None
     owner_id: int
 
 
 class ProjectResponse(BaseModel):
     project_id: int
     project_name: str
-    description: Optional[str]
+    text: Optional[str]
     owner_id: int
 
     class Config:
@@ -53,7 +53,7 @@ class TaskCreate(BaseModel):
 
     title: str
 
-    description: Optional[str] = None
+    text: Optional[str] = None
 
     priority: Literal[
         "low",
@@ -81,7 +81,7 @@ class TaskUpdate(BaseModel):
 
     title: Optional[str] = None
 
-    description: Optional[str] = None
+    text: Optional[str] = None
 
     priority: Optional[
         Literal["low", "medium", "high"]
@@ -94,7 +94,7 @@ class TaskResponse(BaseModel):
 
     id: int
     title: str
-    description: Optional[str]
+    text: Optional[str]
     priority: str
     due_date: Optional[str]
     project_id: int
@@ -109,14 +109,14 @@ class TaskResponse(BaseModel):
 
 class QuickAddRequest(BaseModel):
     text: str
+    project_id: int
 
     @field_validator("text")
     @classmethod
     def validate_text(cls, value):
-
         value = value.strip()
 
         if not value:
-            raise ValueError("Text cannot be blank")
+            raise ValueError("text cannot be blank")
 
         return value
