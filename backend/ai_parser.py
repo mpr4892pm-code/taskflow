@@ -29,9 +29,9 @@ DATE_PHRASES = [
 ]
 
 
-def parse_quick_add(description):
+def parse_quick_add(text):
 
-    lower_text = description.lower()
+    lower_text = text.lower()
 
     # Priority
     if "urgent" in lower_text or "asap" in lower_text:
@@ -55,7 +55,7 @@ def parse_quick_add(description):
             break
 
     # Title
-    title = description
+    title = text
 
     # Remove priority keywords
     for keyword in PRIORITY_KEYWORDS:
