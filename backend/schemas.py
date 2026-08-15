@@ -7,6 +7,48 @@ from pydantic import (
 )
 
 
+# -------------------------
+# User Schemas
+# -------------------------
+
+class UserCreate(BaseModel):
+    name: str
+    email: str
+
+
+class UserResponse(BaseModel):
+    id: int
+    name: str
+    email: str
+
+    class Config:
+        from_attributes = True
+
+
+# -------------------------
+# Project Schemas
+# -------------------------
+
+class ProjectCreate(BaseModel):
+    project_name: str
+    description: Optional[str] = None
+    owner_id: int
+
+
+class ProjectResponse(BaseModel):
+    id: int
+    project_name: str
+    description: Optional[str]
+    owner_id: int
+
+    class Config:
+        from_attributes = True
+
+
+# -------------------------
+# Task Schemas
+# -------------------------
+
 class TaskCreate(BaseModel):
 
     title: str
@@ -59,3 +101,22 @@ class TaskResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# -------------------------
+# AI Quick Add
+# -------------------------
+
+class QuickAddRequest(BaseModel):
+    text: str
+
+    @field_validator("text")
+    @classmethod
+    def validate_text(cls, value):
+
+        value = value.strip()
+
+        if not value:
+            raise ValueError("Text cannot be blank")
+
+        return value
