@@ -321,29 +321,6 @@ def create_task(
 
     return records
 
-@app.get(
-    "/tasks/{task_id}",
-    response_model=TaskResponse
-)
-def get_task(
-    task_id: int,
-    db: Session = Depends(get_db)
-):
-    task = (
-        db.query(Task)
-        .filter(Task.id == task_id)
-        .first()
-    )
-
-    if not task:
-        raise HTTPException(
-            status_code=404,
-            detail="Task not found"
-        )
-
-    return task
-
-
 @app.put(
     "/tasks/{task_id}",
     response_model=TaskResponse
@@ -450,6 +427,28 @@ def search_tasks(
     task_id = index[position]["id"]
 
     return get_task(task_id, db)
+
+@app.get(
+    "/tasks/{task_id}",
+    response_model=TaskResponse
+)
+def get_task(
+    task_id: int,
+    db: Session = Depends(get_db)
+):
+    task = (
+        db.query(Task)
+        .filter(Task.id == task_id)
+        .first()
+    )
+
+    if not task:
+        raise HTTPException(
+            status_code=404,
+            detail="Task not found"
+        )
+
+    return task
 
 @app.get("/projects/stats")
 def project_stats(
