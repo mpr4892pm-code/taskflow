@@ -36,7 +36,7 @@ class ProjectCreate(BaseModel):
 
 
 class ProjectResponse(BaseModel):
-    id: int
+    project_id: int
     project_name: str
     description: Optional[str]
     owner_id: int
