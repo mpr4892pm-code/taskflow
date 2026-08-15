@@ -8,6 +8,7 @@ from .models import Task
 from .dependency import get_db
 from .algorithms import insertion_sort
 
+from .schemas import QuickAddRequest
 
 app = FastAPI()
 
@@ -124,7 +125,6 @@ from .algorithms import (
     linear_search
 )
 from .ai_parser import parse_quick_add
-
 
 Base.metadata.create_all(bind=engine)
 
@@ -511,10 +511,8 @@ def quick_add(
 
     new_task = Task(
         title=parsed["title"],
-        description=data.description,
         priority=parsed["priority"],
         due_date=parsed["due_date_hint"],
-        status="pending",
         project_id=data.project_id
     )
 
