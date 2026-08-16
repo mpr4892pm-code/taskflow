@@ -94,7 +94,7 @@ class TaskResponse(BaseModel):
 
     id: int
     title: str
-    text: Optional[str]
+    description: Optional[str]
     priority: str
     due_date: Optional[str]
     project_id: int

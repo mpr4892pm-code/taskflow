@@ -1,4 +1,4 @@
-from algorithms import (
+from backend.algorithms import (
     insertion_sort,
     binary_search,
     linear_search
