@@ -7,11 +7,53 @@ from pydantic import (
 )
 
 
+# -------------------------
+# User Schemas
+# -------------------------
+
+class UserCreate(BaseModel):
+    name: str
+    email: str
+
+
+class UserResponse(BaseModel):
+    id: int
+    name: str
+    email: str
+
+    class Config:
+        from_attributes = True
+
+
+# -------------------------
+# Project Schemas
+# -------------------------
+
+class ProjectCreate(BaseModel):
+    project_name: str
+    text: Optional[str] = None
+    owner_id: int
+
+
+class ProjectResponse(BaseModel):
+    project_id: int
+    project_name: str
+    text: Optional[str]
+    owner_id: int
+
+    class Config:
+        from_attributes = True
+
+
+# -------------------------
+# Task Schemas
+# -------------------------
+
 class TaskCreate(BaseModel):
 
     title: str
 
-    description: Optional[str] = None
+    text: Optional[str] = None
 
     priority: Literal[
         "low",
@@ -39,7 +81,7 @@ class TaskUpdate(BaseModel):
 
     title: Optional[str] = None
 
-    description: Optional[str] = None
+    text: Optional[str] = None
 
     priority: Optional[
         Literal["low", "medium", "high"]
@@ -59,3 +101,22 @@ class TaskResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# -------------------------
+# AI Quick Add
+# -------------------------
+
+class QuickAddRequest(BaseModel):
+    text: str
+    project_id: int
+
+    @field_validator("text")
+    @classmethod
+    def validate_text(cls, value):
+        value = value.strip()
+
+        if not value:
+            raise ValueError("text cannot be blank")
+
+        return value
