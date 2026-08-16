@@ -17,7 +17,12 @@ cd TaskFlow
 
 The TaskFlow frontend uses HTML, CSS and JavaScript and communicates
 with the FastAPI backend using the Fetch API.
+
+to run the frontend:
+
+```bash
 python -m http.server 5500
+
 
 ## Technologies
 
@@ -59,3 +64,7 @@ GET /tasks/search?title=...&algo=linear
 GET /projects/stats
 
 POST /tasks/quick-add
+
+## Git Workflow
+
+This project was developed using feature branches and merged into main.
