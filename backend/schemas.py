@@ -53,7 +53,7 @@ class TaskCreate(BaseModel):
 
     title: str
 
-    text: Optional[str] = None
+    description: Optional[str] = None
 
     priority: Literal[
         "low",
@@ -94,9 +94,9 @@ class TaskResponse(BaseModel):
 
     id: int
     title: str
-    description: Optional[str]
+    description: Optional[str]= None
     priority: str
-    due_date: Optional[str]
+    due_date: Optional[str]= None
     project_id: int
 
     class Config:

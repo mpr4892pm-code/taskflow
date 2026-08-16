@@ -101,12 +101,8 @@ from fastapi import (
     status
 )
 
-from fastapi.middleware.cors import CORSMiddleware
-
-from sqlalchemy.orm import Session
 from sqlalchemy import func
 
-from .database import Base, engine
 from .models import User, Project, Task
 from .schemas import (
     UserCreate,
@@ -286,8 +282,6 @@ def create_task(
 
     return new_task
 
-
-    tasks = db.query(Task).all()
 
     records = [
         {
