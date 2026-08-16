@@ -73,13 +73,11 @@ This project was developed using feature branches and merged into main.
 
 Start the FastAPI backend and frontend locally using the commands documented above.
 
-## Running the App
-
-### Backend
+### 1.Backend
 
 Open PowerShell in the project folder:
 
 ```powershell
 .\venv\Scripts\Activate.ps1
-pip install -r backend\requirements.txt
+pip install -r requirements.txt
 uvicorn backend.main:app --reload
